@@ -3,10 +3,11 @@
 {% block content %}
 <h1>people:</h1>
 <ul>
-  {% for n in names %}
-    <li>{{ n }}</li>
+  {% for (id,name) in people %}
+    <li><a href="/people/{{ id }}">{{name}}</a></li>
   {% endfor %}
 </ul>
+
 {% endblock %}
 
 
