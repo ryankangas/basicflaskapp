@@ -5,10 +5,10 @@
 <p>{{person_id}}</p>
 <h1>name:</h1>
 <p>{{name}}</p>
-<form class="pure-form" action="{{ url_for("edit_name") }}" method="POST">
+<form class="pure-form" action="{{ url_for("edit_name", person_id=person_id) }}" method="POST">
   <legend>Edit name</legend>
   <label for="name">New name</label>
-  <input type="hidden" name="person_id" value="{{person_id}}">
+  <!-- <input type="hidden" name="person_id" value="{{person_id}}"> -->
   <input type="text" id="name" name="new_name" placeholder="New name" required="required" >
   <button type="submit" class="pure-button pure-button-primary">Submit</button>
 </form>

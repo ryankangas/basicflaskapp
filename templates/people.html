@@ -4,10 +4,11 @@
 <h1>people:</h1>
 <ul>
   {% for (id,name) in people %}
-    <li><a href="/people/{{ id }}">{{name}}</a></li>
+    <li><a href="{{url_for("show_person_details", person_id=id)}}">{{name}}</a></li>
   {% endfor %}
 </ul>
 
 {% endblock %}
 
 
+<!-- /people/{{ id }} -->

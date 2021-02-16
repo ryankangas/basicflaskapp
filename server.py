@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, g, redirect, url_for, jsonify
+from flask import Flask, render_template, request, g, redirect, url_for, jsonify, abort
 from markupsafe import escape
 import db
 
@@ -21,7 +21,7 @@ def people():
 
         return render_template("people.html", people=people)
 
-@app.route('/', methods=['POST'])
+@app.route('/people', methods=['POST'])
 def new_person():
     with db.get_db_cursor(True) as cur:
         name = request.form.get("name", "unnamed friend")
@@ -30,11 +30,10 @@ def new_person():
         
         return redirect(url_for('people'))
 
-@app.route('/people', methods=['GET', 'POST'])
-def edit_name():
+@app.route('/people/<int:person_id>', methods=['POST'])
+def edit_name(person_id):
 	with db.get_db_cursor(True) as cur:
 		name = request.form.get("new_name", "No name")
-		person_id = request.form.get("person_id", "-1")
 		app.logger.info("Updating person %s name to %s", person_id, name);
 		cur.execute("UPDATE person SET name = %s WHERE person_id = %s", (name, person_id))
 		return redirect(url_for('people'))
@@ -59,9 +58,12 @@ def show_person_details(person_id):
 		name = None
 		name = [record[1] for record in cur]
 		if len(name) == 0:
-			return render_template("404.html")
+			abort(404)
 		else:
 			return render_template("person.html", person_id=person_id, name=name[0])
 		
-	
+
+@app.errorhandler(404)
+def error404(error):
+	return render_template("404.html")
 
